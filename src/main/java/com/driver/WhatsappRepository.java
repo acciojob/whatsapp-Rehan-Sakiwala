@@ -32,7 +32,7 @@ public class WhatsappRepository {
         //this.userMap=new HashMap<>();
     }
 
-    public String createUser(String name, String mobile) {
+    public String createUser(String name, String mobile) throws Exception{
         //If the mobile number exists in database, throw "User already exists" exception
         //Otherwise, create the user and return "SUCCESS"
         if(userMobile.contains(mobile)){
@@ -46,7 +46,7 @@ public class WhatsappRepository {
         }
     }
 
-    public Group createGroup(List<User> users) {
+    public Group createGroup(List<User> users) throws Exception{
         // The list contains at least 2 users where the first user is the admin. A group has exactly one admin.
         // If there are only 2 users, the group is a personal chat and the group name should be kept as the name of the second user(other than admin)
         // If there are 2+ users, the name of group should be "Group count". For example, the name of first group would be "Group 1", second would be "Group 2" and so on.
@@ -80,13 +80,13 @@ public class WhatsappRepository {
         return group;
     }
 
-    public int createMessage(String content) {
+    public int createMessage(String content) throws Exception{
         int id=messageId+1;
         Message message=new Message(id,content);
         return ++messageId;
     }
 
-    public int sendMessage(Message message, User sender, Group group) {
+    public int sendMessage(Message message, User sender, Group group) throws Exception{
         //Throw "Group does not exist" if the mentioned group does not exist
         //Throw "You are not allowed to send message" if the sender is not a member of the group
         //If the message is sent successfully, return the final number of messages in that group.
@@ -106,7 +106,7 @@ public class WhatsappRepository {
         return msgList.size();
     }
 
-    public String changeAdmin(User approver, User user, Group group) {
+    public String changeAdmin(User approver, User user, Group group) throws Exception{
         //Throw "Group does not exist" if the mentioned group does not exist
         //Throw "Approver does not have rights" if the approver is not the current admin of the group
         //Throw "User is not a participant" if the user is not a part of the group
