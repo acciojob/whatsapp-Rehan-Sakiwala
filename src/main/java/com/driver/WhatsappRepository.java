@@ -32,11 +32,11 @@ public class WhatsappRepository {
         //this.userMap=new HashMap<>();
     }
 
-    public String createUser(String name, String mobile) throws Exception{
+    public String createUser(String name, String mobile) throws Exception {
         //If the mobile number exists in database, throw "User already exists" exception
         //Otherwise, create the user and return "SUCCESS"
         if(userMobile.contains(mobile)){
-            throw new IllegalCallerException("Mobile number already exist");
+            throw new Exception("Mobile number already exist");
         }
         else {
             userMobile.add(mobile);
@@ -56,16 +56,16 @@ public class WhatsappRepository {
         //For example: Consider userList1 = {Alex, Bob, Charlie}, userList2 = {Dan, Evan}, userList3 = {Felix, Graham, Hugh}.
         //If createGroup is called for these userLists in the same order, their group names would be "Group 1", "Evan", and "Group 2" respectively.
         if(users.size()<2)
-            throw new IllegalArgumentException("Group size must be > 2");
+            throw new Exception("Group size must be > 2");
         User admin=users.get(0);
 
         if(!userMobile.contains(admin.getMobile()))
-            throw new IllegalArgumentException("Admin is not a registered user");
+            throw new Exception("Admin is not a registered user");
 
         for(int i=1; i<users.size();i++){
             User user=users.get(i);
             if(!userMobile.contains(user.getMobile()))
-                throw new IllegalArgumentException("Not a registered user");
+                throw new Exception("Not a registered user");
         }
 
         String gName;
@@ -80,7 +80,7 @@ public class WhatsappRepository {
         return group;
     }
 
-    public int createMessage(String content) throws Exception{
+    public int createMessage(String content){
         int id=messageId+1;
         Message message=new Message(id,content);
         return ++messageId;
@@ -91,11 +91,11 @@ public class WhatsappRepository {
         //Throw "You are not allowed to send message" if the sender is not a member of the group
         //If the message is sent successfully, return the final number of messages in that group.
         if(!groupUserMap.containsKey(group))
-            throw new IllegalArgumentException("Group doesn.t exist");
+            throw new Exception("Group doesn.t exist");
 
         List<User> users=groupUserMap.get(group);
         if(!users.contains(sender))
-            throw new IllegalArgumentException("Sender is not in the group");
+            throw new Exception("Sender is not in the group");
 
         senderMap.put(message,sender);
 
@@ -112,12 +112,12 @@ public class WhatsappRepository {
         //Throw "User is not a participant" if the user is not a part of the group
         //Change the admin of the group to "user" and return "SUCCESS". Note that at one time there is only one admin and the admin rights are transferred from approver to user.
         if(!groupUserMap.containsKey(group))
-            throw new IllegalArgumentException("Group doesn't exist");
+            throw new Exception("Group doesn't exist");
         if(!adminMap.get(group).equals(approver))
-            throw new IllegalArgumentException("Approver doesn't have rights");
+            throw new Exception("Approver doesn't have rights");
         List<User> ulist=groupUserMap.get(group);
         if(!ulist.contains(user))
-            throw new IllegalArgumentException("User is not a participant");
+            throw new Exception("User is not a participant");
 
         Collections.swap(ulist,0,ulist.indexOf(user));
         groupUserMap.put(group,ulist);
